@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { HistoricalChart } from '../config/Api';
 import { Line } from 'react-chartjs-2';
-import { CircularProgress, createTheme, makeStyles, ThemeProvider } from '@material-ui/core';
+import { CircularProgress, createTheme, ThemeProvider, Typography, Box } from '@mui/material';
 import SelectButton from './SelectButton';
 import { chartDays } from '../config/Data';
 import { CryptoState } from '../CryptoContext';
@@ -28,23 +28,14 @@ ChartJS.register(
   Legend
 );
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    width: '75%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 25,
-    padding: 40,
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-      marginTop: 0,
-      padding: 20,
-      paddingTop: 0,
+const darkTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#fff',
     },
+    mode: 'dark',
   },
-}));
+});
 
 const CoinInfo = ({ coin }) => {
   const [historicData, setHistoricData] = useState([]);
@@ -52,8 +43,6 @@ const CoinInfo = ({ coin }) => {
   const { currency } = CryptoState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const classes = useStyles();
 
   const fetchHistoricData = async () => {
     setLoading(true);
@@ -82,22 +71,29 @@ const CoinInfo = ({ coin }) => {
     fetchHistoricData();
   }, [days, currency, coin.id]);
 
-  const darkTheme = createTheme({
-    palette: {
-      primary: {
-        main: '#fff',
-      },
-      type: 'dark',
-    },
-  });
-
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className={classes.container}>
+      <Box
+        sx={{
+          width: '75%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 2.5,
+          padding: 5,
+          '@media (max-width: 900px)': {
+            width: '100%',
+            marginTop: 0,
+            padding: 2.5,
+            paddingTop: 0,
+          },
+        }}
+      >
         {loading ? (
-          <CircularProgress style={{ color: 'gold' }} size={250} thickness={1} />
+          <CircularProgress sx={{ color: 'gold', size: 250, thickness: 1 }} />
         ) : error ? (
-          <div style={{ color: 'red' }}>{error}</div>
+          <Typography color="error">{error}</Typography>
         ) : (
           <>
             <Line
@@ -141,10 +137,10 @@ const CoinInfo = ({ coin }) => {
                 },
               }}
             />
-            <div
-              style={{
+            <Box
+              sx={{
                 display: 'flex',
-                marginTop: 20,
+                marginTop: 2.5,
                 justifyContent: 'space-around',
                 width: '100%',
               }}
@@ -161,10 +157,10 @@ const CoinInfo = ({ coin }) => {
                   {day.label}
                 </SelectButton>
               ))}
-            </div>
+            </Box>
           </>
         )}
-      </div>
+      </Box>
     </ThemeProvider>
   );
 };
