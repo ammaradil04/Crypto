@@ -3,28 +3,25 @@ import './App.css';
 import Header from './Components/Header';
 import Homepage from './Pages/Homepage';
 import Coinpage from './Pages/Coinpage';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+
+// Define your styles using styled
+const AppContainer = styled('div')(({ theme }) => ({
+  backgroundColor: '#14161a',
+  color: 'white',
+  minHeight: '100vh',
+}));
 
 function App() {
-  const useStyles = makeStyles(()=>({
-    App: {
-      backgroundColor: '#14161a',
-      color: "white",
-      minHeight:"100vh"
-    },
-  }));
-  const classes = useStyles();
-
   return (
-    
     <BrowserRouter>
-      <div className={classes.App}>
+      <AppContainer>
         <Header />
         <Routes>
-          <Route path="/" element={<Homepage />}  />
+          <Route path="/" element={<Homepage />} />
           <Route path="/coins/:id" element={<Coinpage />} />
         </Routes>
-      </div>
+      </AppContainer>
     </BrowserRouter>
   );
 }
