@@ -8,7 +8,7 @@ import {
   Typography,
   createTheme,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CryptoState } from '../CryptoContext';
