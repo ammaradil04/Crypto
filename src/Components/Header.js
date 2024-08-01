@@ -41,7 +41,7 @@ const Header = () => {
         <Container>
           <Toolbar>
             <Title onClick={() => navigate('/')} variant='h6'>
-              Crypto Hunter
+               Crypto Explorer
             </Title>
             <Select
               variant='outlined'
