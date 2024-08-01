@@ -1,32 +1,34 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 
-const useStyles = makeStyles({
-  selectButton: {
-    border: '1px solid gold',
-    borderRadius: 5,
-    padding: '10px 20px',
-    fontFamily: 'Montserrat',
-    cursor: 'pointer',
-    backgroundColor: (props) => (props.selected ? 'gold' : 'transparent'),
-    color: (props) => (props.selected ? 'black' : 'inherit'),
-    fontWeight: (props) => (props.selected ? 700 : 500),
-    '&:hover': {
-      backgroundColor: 'gold',
-      color: 'black',
-    },
-    width: '22%',
+const SelectButton = styled(Typography)(({ theme, selected }) => ({
+  border: '1px solid gold',
+  borderRadius: 5,
+  padding: '10px 20px',
+  fontFamily: 'Montserrat',
+  cursor: 'pointer',
+  backgroundColor: selected ? 'gold' : 'transparent',
+  color: selected ? 'black' : 'inherit',
+  fontWeight: selected ? 700 : 500,
+  '&:hover': {
+    backgroundColor: 'gold',
+    color: 'black',
   },
-});
+  width: '22%',
+  textAlign: 'center',
+}));
 
-const SelectButton = ({ children, selected, onClick }) => {
-  const classes = useStyles({ selected });
-
+const SelectButtonComponent = ({ children, selected, onClick }) => {
   return (
-    <span onClick={onClick} className={classes.selectButton}>
+    <SelectButton
+      onClick={onClick}
+      selected={selected}
+      variant="body2"  // Optional: adjust typography variant as needed
+    >
       {children}
-    </span>
+    </SelectButton>
   );
 };
 
-export default SelectButton;
+export default SelectButtonComponent;
