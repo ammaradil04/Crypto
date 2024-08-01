@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';  // Ensure correct import path for styles
+import { makeStyles } from '@material-ui/core';  // Ensure correct import path for styles
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { TrendingCoins } from '../../config/Api';
