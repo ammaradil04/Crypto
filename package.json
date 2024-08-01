@@ -15,7 +15,7 @@
     "axios": "^1.7.2",
     "buffer": "^6.0.3",
     "chart.js": "^4.4.3",
-    "html-react-parser": "^2.0.9",
+    "html-react-parser": "^5.1.12",  // Updated version
     "react": "^18.3.1",
     "react-alice-carousel": "^2.9.1",
     "react-chartjs-2": "^5.2.0",
