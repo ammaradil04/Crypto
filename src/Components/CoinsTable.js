@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
+import Pagination from "@mui/material/Pagination";
 import {
   Container,
   createTheme,
@@ -15,15 +14,41 @@ import {
   TableContainer,
   Table,
   Paper,
-} from "@material-ui/core";
+} from "@mui/material";
+import { styled } from '@mui/material/styles';
 import axios from "axios";
 import { CoinList } from "../config/Api";
-import { useNavigate } from "react-router-dom"; // Updated import
+import { useNavigate } from "react-router-dom";
 import { CryptoState } from "../CryptoContext";
 
 export function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+// Styled components
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  color: 'black',
+  fontWeight: 700,
+  fontFamily: 'Montserrat',
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  backgroundColor: '#16171a',
+  cursor: 'pointer',
+  '&:hover': {
+    backgroundColor: '#131111',
+  },
+  fontFamily: 'Montserrat',
+}));
+
+const darkTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#fff",
+    },
+    type: "dark",
+  },
+});
 
 export default function CoinsTable() {
   const [coins, setCoins] = useState([]);
@@ -32,41 +57,16 @@ export default function CoinsTable() {
   const [page, setPage] = useState(1);
 
   const { currency, symbol } = CryptoState();
-
-  const useStyles = makeStyles({
-    row: {
-      backgroundColor: "#16171a",
-      cursor: "pointer",
-      "&:hover": {
-        backgroundColor: "#131111",
-      },
-      fontFamily: "Montserrat",
-    },
-    pagination: {
-      "& .MuiPaginationItem-root": {
-        color: "gold",
-      },
-    },
-  });
-
-  const classes = useStyles();
-  const navigate = useNavigate(); // Updated
-
-  const darkTheme = createTheme({
-    palette: {
-      primary: {
-        main: "#fff",
-      },
-      type: "dark",
-    },
-  });
+  const navigate = useNavigate();
 
   const fetchCoins = async () => {
     setLoading(true);
-    const { data } = await axios.get(CoinList(currency));
-    console.log(data);
-
-    setCoins(data);
+    try {
+      const { data } = await axios.get(CoinList(currency));
+      setCoins(data);
+    } catch (error) {
+      console.error('Failed to fetch coins:', error);
+    }
     setLoading(false);
   };
 
@@ -78,8 +78,8 @@ export default function CoinsTable() {
   const handleSearch = () => {
     return coins.filter(
       (coin) =>
-        coin.name.toLowerCase().includes(search) ||
-        coin.symbol.toLowerCase().includes(search)
+        coin.name.toLowerCase().includes(search.toLowerCase()) ||
+        coin.symbol.toLowerCase().includes(search.toLowerCase())
     );
   };
 
@@ -106,31 +106,24 @@ export default function CoinsTable() {
               <TableHead style={{ backgroundColor: "#EEBC1D" }}>
                 <TableRow>
                   {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
-                    <TableCell
-                      style={{
-                        color: "black",
-                        fontWeight: "700",
-                        fontFamily: "Montserrat",
-                      }}
+                    <StyledTableCell
                       key={head}
                       align={head === "Coin" ? "" : "right"}
                     >
                       {head}
-                    </TableCell>
+                    </StyledTableCell>
                   ))}
                 </TableRow>
               </TableHead>
-
               <TableBody>
                 {handleSearch()
                   .slice((page - 1) * 10, (page - 1) * 10 + 10)
                   .map((row) => {
                     const profit = row.price_change_percentage_24h > 0;
                     return (
-                      <TableRow
-                        onClick={() => navigate(`/coins/${row.id}`)} // Updated
-                        className={classes.row}
-                        key={row.name}
+                      <StyledTableRow
+                        onClick={() => navigate(`/coins/${row.id}`)}
+                        key={row.id}
                       >
                         <TableCell
                           component="th"
@@ -169,7 +162,7 @@ export default function CoinsTable() {
                         <TableCell
                           align="right"
                           style={{
-                            color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+                            color: profit ? "rgb(14, 203, 129)" : "red",
                             fontWeight: 500,
                           }}
                         >
@@ -183,7 +176,7 @@ export default function CoinsTable() {
                           )}
                           M
                         </TableCell>
-                      </TableRow>
+                      </StyledTableRow>
                     );
                   })}
               </TableBody>
@@ -191,16 +184,14 @@ export default function CoinsTable() {
           )}
         </TableContainer>
 
-        {/* Comes from @material-ui/lab */}
         <Pagination
-          count={(handleSearch()?.length / 10).toFixed(0)}
+          count={Math.ceil(handleSearch().length / 10)}
           style={{
             padding: 20,
             width: "100%",
             display: "flex",
             justifyContent: "center",
           }}
-          classes={{ ul: classes.pagination }}
           onChange={(_, value) => {
             setPage(value);
             window.scroll(0, 450);
