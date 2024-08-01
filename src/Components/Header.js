@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   AppBar,
   Container,
@@ -7,20 +8,18 @@ import {
   Toolbar,
   Typography,
   createTheme,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core';
-import React from 'react';
+} from '@mui/material';
+import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { CryptoState } from '../CryptoContext';
 
-const useStyles = makeStyles(() => ({
-  title: {
-    flex: 1,
-    color: 'gold',
-    fontFamily: 'Montserrat',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-  },
+// Styled component for title
+const Title = styled(Typography)(({ theme }) => ({
+  flex: 1,
+  color: 'gold',
+  fontFamily: 'Montserrat',
+  fontWeight: 'bold',
+  cursor: 'pointer',
 }));
 
 const darkTheme = createTheme({
@@ -28,12 +27,11 @@ const darkTheme = createTheme({
     primary: {
       main: '#fff',
     },
-    type: 'dark',
+    mode: 'dark',
   },
 });
 
 const Header = () => {
-  const classes = useStyles();
   const navigate = useNavigate();
   const { currency, setCurrency } = CryptoState();
   
@@ -42,16 +40,12 @@ const Header = () => {
       <AppBar color='transparent' position='static'>
         <Container>
           <Toolbar>
-            <Typography
-              onClick={() => navigate('/')}
-              className={classes.title}
-              variant='h6'
-            >
+            <Title onClick={() => navigate('/')} variant='h6'>
               Crypto Hunter
-            </Typography>
+            </Title>
             <Select
               variant='outlined'
-              style={{
+              sx={{
                 width: 100,
                 height: 40,
                 marginRight: 15,
@@ -59,8 +53,8 @@ const Header = () => {
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
             >
-              <MenuItem value={'USD'}>USD</MenuItem>
-              <MenuItem value={'INR'}>INR</MenuItem>
+              <MenuItem value='USD'>USD</MenuItem>
+              <MenuItem value='INR'>INR</MenuItem>
             </Select>
           </Toolbar>
         </Container>
