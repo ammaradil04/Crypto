@@ -1,44 +1,45 @@
-import { Container, makeStyles, Typography } from '@material-ui/core';
+import { Container, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import React from 'react';
 import Carousel from './Carousel';
 
-const useStyles = makeStyles(() => ({
-  banner: {
-    backgroundImage: "url(./banner2.jpg)",
-    height: '400px',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  bannerContent: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: '25px',
-    justifyContent: 'space-around',
-  },
-  tagline: {
-    display: 'flex',
-    height: '40%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    textAlign: 'center',
-    color: 'white',
-  },
-}));
+// Define your styles using styled
+const BannerContainer = styled('div')({
+  backgroundImage: "url(./banner2.jpg)",
+  height: '400px',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  display: 'flex',
+  alignItems: 'center',
+});
+
+const BannerContent = styled(Container)({
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  paddingTop: '25px',
+  justifyContent: 'space-around',
+});
+
+const Tagline = styled('div')({
+  display: 'flex',
+  height: '40%',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  textAlign: 'center',
+  color: 'white',
+});
 
 const Banner = () => {
-  const classes = useStyles();
   return (
-    <div className={classes.banner}>
-      <Container className={classes.bannerContent}>
-        <div className={classes.tagline}>
+    <BannerContainer>
+      <BannerContent>
+        <Tagline>
           <Typography
             variant="h2"
-            style={{
+            sx={{
               fontWeight: 'bold',
-              marginBottom: '15px',
+              mb: 2,
               fontFamily: 'Montserrat',
             }}
           >
@@ -46,7 +47,7 @@ const Banner = () => {
           </Typography>
           <Typography
             variant="subtitle2"
-            style={{
+            sx={{
               color: 'darkgrey',
               textTransform: 'capitalize',
               fontFamily: 'Montserrat',
@@ -54,10 +55,10 @@ const Banner = () => {
           >
             Get all the info regarding Crypto
           </Typography>
-        </div>
+        </Tagline>
         <Carousel />
-      </Container>
-    </div>
+      </BannerContent>
+    </BannerContainer>
   );
 };
 
