@@ -28,8 +28,8 @@ export function numberWithCommas(x) {
 // Styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   color: 'black',
-  fontWeight: 700,
   fontFamily: 'Montserrat',
+  fontWeight: 'normal', // Set font weight to normal
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -46,7 +46,7 @@ const darkTheme = createTheme({
     primary: {
       main: "#fff",
     },
-    type: "dark",
+    mode: "dark",
   },
 });
 
